@@ -25,13 +25,12 @@ def mergeDicts(*dicts):
         err_tpl = "You must provide at least 2 arguments ({num} given)"
         raise TypeError(err_tpl.format(num=len_dicts))
 
-
-    for i, d in enumerate(dicts):
-        if i == 0:
-            z = d.copy()
-        else:
-            z.update(d)
-
+    it = iter(dicts)
+    z = next(it).copy()
+    
+    for d in it:
+        z.update(d)
+    
     return z
 
 
@@ -68,18 +67,15 @@ def dbString(dtype, user, password, host, port, db_name):
 
 
 def reprForClass(self, attributes_to_print):
-    content_str = ""
-    content_str_new = ""
-
+    attributes = []
+    
     for k in attributes_to_print:
-        content_str += "{k}={v}, ".format(k=k, v=getattr(self, k))
-
-    if content_str:
-        content_str_new = content_str[:-2]
-
-    tpl = self.__class__.__name__ + "({{{c}}})"
-
-    return tpl.format(c=content_str_new)
+        attributes.append("{k}={v}".format(k=k, v=getattr(self, k)))
+    
+    return "{klass}({attributes})".format(
+        klass = self.__class__.__name__, 
+        attributes = ", ".join(attributes), 
+    )
 
 
 @coroutine
@@ -103,6 +99,7 @@ def recvAll(reader, msg_len, packet_len=4096):
 
     return data_all
 
+
 _sentinel = object()
 
 def boolean(arg=_sentinel):
@@ -113,7 +110,7 @@ def boolean(arg=_sentinel):
         return bool(arg)
     except ValueError:
         # maybe a numpy array?
-        return bool(len(arg))
+        return bool(arg.size)
 
 __all__ = (
     "number_re",
