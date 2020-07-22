@@ -1,7 +1,12 @@
 import math
-from collections import Iterable
 import random
 from cmath import isnan
+
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
+
 
 inf = float("inf")
 
