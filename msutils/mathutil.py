@@ -8,7 +8,8 @@ except ImportError:
     from collections import Iterable
 
 
-inf = float("inf")
+inf = float("+Inf")
+minus_inf = float("-Inf")
 
 def minDeep(arg, exclude=None, no_nan=False):
     """
@@ -16,8 +17,6 @@ def minDeep(arg, exclude=None, no_nan=False):
     matrices, tensors...) and for any type of iterable (list of tuples,
     tuple of sets, list of tuples of dictionaries...)
     """
-
-    inf = float("+Inf")
 
     if exclude is None:
         exclude = ()
@@ -44,7 +43,7 @@ def minDeep(arg, exclude=None, no_nan=False):
 
     try:
         if no_nan:
-            res = min((x for x in mins if not math.isnan(x)))
+            res = min((x for x in mins if not isnan(x)))
         else:
             res = min(mins)
     except ValueError:
@@ -59,8 +58,6 @@ def maxDeep(arg, exclude=None):
     matrices, tensors...) and for any type of iterable (list of tuples,
     tuple of sets, list of tuples of dictionaries...)
     """
-
-    minus_inf = float("-Inf")
 
     if exclude is None:
         exclude = ()
@@ -94,36 +91,14 @@ def maxDeep(arg, exclude=None):
 
 
 def magnitudeOrder(num):
-    num_str = str(num)
-
-    try:
-        e_i = num_str.index("e")
-    except ValueError:
-        pass
-    else:
-        return int(num_str[e_i+1:])
-
-    if len(num_str) == 1:
+    if num == 0:
         return 0
-
-    if num_str[0:1] == "0":
-        order = -1
-
-        for c in num_str[2:]:
-            if c != "0":
-                break
-
-            order -= 1
-    else:
-        order = 0
-
-        for c in num_str[1:]:
-            if c == ".":
-                break
-
-            order += 1
-
-    return order
+    
+    absnum = abs(num)
+    order = math.log10(absnum)
+    res = math.floor(order)
+    
+    return res
 
 
 def tossCoin():
@@ -234,4 +209,5 @@ __all__ = (
     isEven.__name__,
     median.__name__,
     "inf",
+    "minus_inf",
 )

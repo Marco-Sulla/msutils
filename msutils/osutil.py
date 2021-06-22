@@ -24,22 +24,21 @@ def rmFile(path):
             raise
 
 
+def _singleOverwrite(path):
+    filename = os.path.basename(path)
+    dest_path = os.path.join(dest_dir, filename)
+
+    mkdirP(dest_dir)
+    rmFile(dest_path)
+    shutil.move(path, dest_dir)
+
 def overwrite(paths, dest_dir):
-    def singleOverwrite(path):
-        filename = os.path.basename(path)
-        dest_path = os.path.join(dest_dir, filename)
-
-        mkdirP(dest_dir)
-        rmFile(dest_path)
-        shutil.move(path, dest_dir)
-
-
     if isinstance(paths, Iterable):
         for path in paths:
-            singleOverwrite(path)
+            _singleOverwrite(path)
     else:
         path = paths
-        singleOverwrite(path)
+        _singleOverwrite(path)
 
 def tail(filepath):
     """
