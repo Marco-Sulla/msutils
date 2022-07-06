@@ -19,7 +19,7 @@ description = "Simple utilities for Python 3"
 keywords = "developers stable utility"
 # for pathlib
 python_requires = ">=3.4"
-install_requires = ("arrow==0.15.5", "more_itertools==8.2.0", "lxml==4.6.5")
+install_requires = ("arrow==0.15.5", "more_itertools==8.2.0", "lxml==4.9.1")
 
 classifiers = [
 	"Development Status :: 5 - Production/Stable",
